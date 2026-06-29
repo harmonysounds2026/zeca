@@ -82,6 +82,7 @@ public sealed class FilterGraphBuilder
 
         AddOutputCodec(args, settings);
         AddOutputFormat(args);
+        AddOutputMuxer(args, settings);
         AddThreadCount(args, settings);
 
         args.Add(outputPath);
@@ -147,6 +148,22 @@ public sealed class FilterGraphBuilder
         args.Add(CanonicalSampleRate.ToString(CultureInfo.InvariantCulture));
         args.Add("-ac");
         args.Add(CanonicalChannels.ToString(CultureInfo.InvariantCulture));
+    }
+
+    /// <summary>
+    /// Forces the output muxer (container) explicitly with <c>-f</c>.
+    /// Without this, ffmpeg infers the format from the output file
+    /// extension - but the renderer writes through a temporary
+    /// <c>.tmp</c> file (atomic rename pattern), so the actual filename
+    /// it sees is e.g. <c>...mp3.tmp</c> and the inference fails with
+    /// "Unable to choose an output format". Setting <c>-f</c> bypasses
+    /// the inference and matches the codec selected by
+    /// <see cref="AddOutputCodec"/>.
+    /// </summary>
+    private static void AddOutputMuxer(List<string> args, AppSettings settings)
+    {
+        args.Add("-f");
+        args.Add(settings.OutputFormat == OutputFormat.Mp3 ? "mp3" : "wav");
     }
 
     private void AddThreadCount(List<string> args, AppSettings settings)
