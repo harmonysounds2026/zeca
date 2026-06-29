@@ -36,8 +36,19 @@
               are an explicit, idiomatic choice here.
       CA1303: localization warnings are not relevant for a single-locale
               desktop utility shipped only in English.
+      CA1068: CancellationToken should be last. We deliberately put the
+              optional DbSession parameter AFTER CancellationToken to keep
+              every existing positional caller source-compatible. See
+              Application.Abstractions.Persistence.DbSession docs.
+      CA1710: JobLifecycleEvent is a domain event payload, not an
+              EventArgs subclass. The 'EventArgs' suffix would be
+              misleading.
+      CA1716: 'date' as a parameter name does shadow VB.NET's 'Date'
+              keyword but this codebase is C#-only.
+      CA1848: LoggerMessage delegates are a micro-optimization that adds
+              significant boilerplate. Not worth the trade-off in v1.
     -->
-    <NoWarn>$(NoWarn);CA1000;CA1303</NoWarn>
+    <NoWarn>$(NoWarn);CA1000;CA1303;CA1068;CA1710;CA1716;CA1848</NoWarn>
   </PropertyGroup>
 
 </Project>

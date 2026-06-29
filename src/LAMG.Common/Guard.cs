@@ -82,6 +82,18 @@ public static class Guard
         return value;
     }
 
+    public static long Positive(
+        long value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    {
+        if (value <= 0)
+        {
+            throw new ArgumentOutOfRangeException(paramName, value, "Value must be > 0.");
+        }
+
+        return value;
+    }
+
     public static int InRange(
         int value,
         int minInclusive,
