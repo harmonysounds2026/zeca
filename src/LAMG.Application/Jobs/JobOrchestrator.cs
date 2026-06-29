@@ -54,6 +54,7 @@ public sealed class JobOrchestrator : IJobOrchestrator
     private readonly ICpuModeApplier _cpuModeApplier;
     private readonly ISystemAwakeKeeper _systemAwakeKeeper;
     private readonly IFFmpegLocator _ffmpegLocator;
+    private readonly ICrashRecoveryService _crashRecovery;
     private readonly ILogger<JobOrchestrator> _logger;
 
     private readonly object _lock = new();
@@ -86,6 +87,7 @@ public sealed class JobOrchestrator : IJobOrchestrator
         ICpuModeApplier cpuModeApplier,
         ISystemAwakeKeeper systemAwakeKeeper,
         IFFmpegLocator ffmpegLocator,
+        ICrashRecoveryService crashRecovery,
         ILogger<JobOrchestrator> logger)
     {
         _importBatches = Guard.NotNull(importBatches);
@@ -101,6 +103,7 @@ public sealed class JobOrchestrator : IJobOrchestrator
         _cpuModeApplier = Guard.NotNull(cpuModeApplier);
         _systemAwakeKeeper = Guard.NotNull(systemAwakeKeeper);
         _ffmpegLocator = Guard.NotNull(ffmpegLocator);
+        _crashRecovery = Guard.NotNull(crashRecovery);
         _logger = Guard.NotNull(logger);
     }
 
@@ -401,6 +404,18 @@ public sealed class JobOrchestrator : IJobOrchestrator
         if (fromStage > JobStage.NotStarted)
         {
             await RestoreCountersOnResumeAsync(jobId, projectId, cancellationToken)
+                .ConfigureAwait(false);
+
+            // Any mix still flagged Rendering is leftover from an
+            // interrupted previous run - the renderer marks Rendering
+            // before launching ffmpeg and only flips to Completed (or
+            // Failed) after the rename succeeds. Reset those rows to
+            // Planned and delete the matching .tmp files so the render
+            // pipeline picks them up instead of skipping them. Without
+            // this, a Resume after a kill mid-render would log
+            // "0 planned mix(es) to render" and exit cleanly while
+            // leaving the user with no output.
+            await CleanupOrphanedRendersAsync(jobId, cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -1093,6 +1108,40 @@ public sealed class JobOrchestrator : IJobOrchestrator
         _jobMixesPlanned = 0;
         _jobTracksSkipped = 0;
         _jobCurrentMixName = null;
+    }
+
+    /// <summary>
+    /// Resets any mix still flagged <c>Rendering</c> for this job's
+    /// project back to <c>Planned</c>, and deletes the orphan
+    /// <c>.tmp</c> files left in the output folder. Best-effort: a
+    /// failure logs a warning but does not block the resumed
+    /// pipeline.
+    /// </summary>
+    private async Task CleanupOrphanedRendersAsync(long jobId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            Job? job = await _jobRepository
+                .GetByIdAsync(jobId, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (job is null) return;
+
+            await _crashRecovery
+                .CleanupOrphansAsync(job, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(
+                ex,
+                "Could not clean up orphaned renders for job {JobId} on resume; the render pipeline may skip stuck mixes.",
+                jobId);
+        }
     }
 
     /// <summary>
