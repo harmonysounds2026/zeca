@@ -24,12 +24,17 @@
 
     <!-- Hosting -->
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <!--
+      Bumped to 8.0.1 to match Microsoft.Extensions.Hosting's transitive
+      requirement. NuGet's NU1605 detects the implicit downgrade from
+      8.0.1 -> 8.0.0 as an error.
+    -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
 
     <!-- Logging: Serilog + bridges -->
     <PackageReference Include="Serilog" Version="3.1.1" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
   </ItemGroup>
