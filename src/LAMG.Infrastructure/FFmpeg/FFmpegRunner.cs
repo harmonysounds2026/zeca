@@ -104,7 +104,7 @@ public sealed class FFmpegRunner
         ConfigureStartInfo(process, ffmpegPath, arguments, redirectStandardOutput: true);
 
         StringBuilder stderrBuffer = new();
-        AttachStderrHandler(process, stderrBuffer, stderrLine: null);
+        AttachStderrHandler(process, stderrBuffer, onLine: null);
 
         StartProcess(process);
         process.BeginErrorReadLine();
