@@ -14,12 +14,14 @@ using LAMG.UI.Services;
 
 using Microsoft.Extensions.Logging;
 
-// Alias shadows the sibling LAMG.Application namespace - without
-// this, every "Application.Current" in the file would resolve to the
-// namespace and fail with CS0234. See the rationale on App.xaml.cs.
-using Application = System.Windows.Application;
-
 namespace LAMG.UI.ViewModels;
+
+// The alias must sit INSIDE the namespace (i.e. after the file-scoped
+// `namespace ...;` declaration). Compilation-unit-level using
+// directives are searched AFTER all enclosing namespaces, so the
+// sibling `LAMG.Application` namespace would otherwise win the
+// lookup. Inside the namespace, this alias is consulted first.
+using Application = System.Windows.Application;
 
 /// <summary>
 /// Backing for the Processing screen. Subscribes to the orchestrator's
