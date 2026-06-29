@@ -29,7 +29,13 @@ namespace LAMG.UI;
 /// Application entry point. Builds the generic host, configures
 /// Serilog, runs database migrations, then shows the shell window.
 /// </summary>
-public partial class App : Application
+/// <remarks>
+/// Base class is fully qualified because the unqualified name
+/// <c>Application</c> would resolve to the sibling namespace
+/// <c>LAMG.Application</c> (which is in scope inside <c>LAMG.UI</c>)
+/// instead of the WPF <c>System.Windows.Application</c> class.
+/// </remarks>
+public partial class App : System.Windows.Application
 {
     private IHost? _host;
     private ILogger<App>? _logger;
