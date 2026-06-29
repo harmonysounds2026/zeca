@@ -50,7 +50,12 @@ public sealed partial class SettingsViewModel : ObservableObject
     [ObservableProperty] private double _silenceThresholdDb = -50.0;
     [ObservableProperty] private int _silenceMinDurationMs = 500;
     [ObservableProperty] private CpuMode _cpuMode = CpuMode.Normal;
-    [ObservableProperty] private string? _ffmpegPathOverride;
+
+    // Field deliberately spelled with both 'F's uppercase so the
+    // CommunityToolkit.Mvvm source generator emits the property as
+    // "FFmpegPathOverride" (matching AppSettings) rather than the
+    // default "FfmpegPathOverride" it would produce from "_ffmpeg...".
+    [ObservableProperty] private string? _FFmpegPathOverride;
     [ObservableProperty] private bool _importRecursively;
 
     [ObservableProperty] private bool _isBusy;

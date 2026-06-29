@@ -10,6 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
+// Alias shadows the sibling LAMG.Application namespace - without
+// this, every "Application.Current" in the file would resolve to the
+// namespace and fail with CS0234. See the rationale on App.xaml.cs.
+using Application = System.Windows.Application;
+
 namespace LAMG.UI.Services;
 
 /// <inheritdoc cref="IDialogService"/>

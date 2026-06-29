@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,6 +13,11 @@ using LAMG.Domain.Enums;
 using LAMG.UI.Services;
 
 using Microsoft.Extensions.Logging;
+
+// Alias shadows the sibling LAMG.Application namespace - without
+// this, every "Application.Current" in the file would resolve to the
+// namespace and fail with CS0234. See the rationale on App.xaml.cs.
+using Application = System.Windows.Application;
 
 namespace LAMG.UI.ViewModels;
 
