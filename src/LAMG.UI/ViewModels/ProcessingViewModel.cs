@@ -16,19 +16,18 @@ using Microsoft.Extensions.Logging;
 
 namespace LAMG.UI.ViewModels;
 
-// The alias must sit INSIDE the namespace (i.e. after the file-scoped
-// `namespace ...;` declaration). Compilation-unit-level using
-// directives are searched AFTER all enclosing namespaces, so the
-// sibling `LAMG.Application` namespace would otherwise win the
-// lookup. Inside the namespace, this alias is consulted first.
-using Application = System.Windows.Application;
-
 /// <summary>
 /// Backing for the Processing screen. Subscribes to the orchestrator's
 /// lifecycle and duplicate-resolution events, mirrors the in-memory
 /// Serilog ring buffer into the live-log list, and wires the
 /// Pause/Resume/Cancel commands to <see cref="IJobOrchestrator"/>.
 /// </summary>
+/// <remarks>
+/// Every reference to the WPF <c>Application</c> class is fully
+/// qualified as <c>System.Windows.Application</c> because the
+/// sibling <c>LAMG.Application</c> namespace shadows the unqualified
+/// name inside this assembly.
+/// </remarks>
 public sealed partial class ProcessingViewModel : ObservableObject, IDisposable
 {
     private const int MaxLogLines = 5000;
@@ -223,7 +222,7 @@ public sealed partial class ProcessingViewModel : ObservableObject, IDisposable
 
     private void OnLogLineWritten(object? sender, LogLine line)
     {
-        Application? app = Application.Current;
+        System.Windows.Application? app = System.Windows.Application.Current;
         if (app is null) return;
 
         app.Dispatcher.BeginInvoke(() =>
@@ -238,7 +237,7 @@ public sealed partial class ProcessingViewModel : ObservableObject, IDisposable
 
     private void OnJobLifecycleChanged(object? sender, JobLifecycleEvent e)
     {
-        Application? app = Application.Current;
+        System.Windows.Application? app = System.Windows.Application.Current;
         if (app is null) return;
 
         app.Dispatcher.BeginInvoke(() =>
@@ -286,7 +285,7 @@ public sealed partial class ProcessingViewModel : ObservableObject, IDisposable
         object? sender,
         DuplicateResolutionRequestedEventArgs e)
     {
-        Application? app = Application.Current;
+        System.Windows.Application? app = System.Windows.Application.Current;
         if (app is null) return;
 
         // Fire-and-forget on the UI dispatcher: show the dialog, then
@@ -329,7 +328,7 @@ public sealed partial class ProcessingViewModel : ObservableObject, IDisposable
         object? sender,
         ReusePoolRequestedEventArgs e)
     {
-        Application? app = Application.Current;
+        System.Windows.Application? app = System.Windows.Application.Current;
         if (app is null) return;
 
         // Same pattern as the duplicate dialog: marshal to the UI
@@ -374,7 +373,7 @@ public sealed partial class ProcessingViewModel : ObservableObject, IDisposable
 
     private void OnMixRendered(object? sender, MixRenderedEventArgs e)
     {
-        Application? app = Application.Current;
+        System.Windows.Application? app = System.Windows.Application.Current;
         if (app is null) return;
 
         // Build the row on the calling thread (immutable values only),

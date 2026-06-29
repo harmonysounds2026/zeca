@@ -12,17 +12,14 @@ using Microsoft.Win32;
 
 namespace LAMG.UI.Services;
 
-// The alias must sit INSIDE the namespace (i.e. after the file-scoped
-// `namespace ...;` declaration). Compilation-unit-level using
-// directives are searched AFTER all enclosing namespaces, so the
-// sibling `LAMG.Application` namespace would otherwise win the
-// lookup. Inside the namespace, this alias is consulted first.
-using Application = System.Windows.Application;
-
 /// <inheritdoc cref="IDialogService"/>
 /// <remarks>
 /// Each call marshals to the UI dispatcher and shows the matching
-/// <see cref="Window"/> as a modal child of <see cref="Application.MainWindow"/>.
+/// <see cref="Window"/> as a modal child of the application's main
+/// window. Every reference to the WPF <c>Application</c> class is
+/// fully qualified as <c>System.Windows.Application</c> because the
+/// sibling <c>LAMG.Application</c> namespace shadows the unqualified
+/// name inside this assembly.
 /// </remarks>
 public sealed class DialogService : IDialogService
 {
@@ -48,7 +45,7 @@ public sealed class DialogService : IDialogService
                 InitialDirectory = initialDirectory ?? string.Empty,
             };
 
-            bool? result = dialog.ShowDialog(Application.Current.MainWindow);
+            bool? result = dialog.ShowDialog(System.Windows.Application.Current.MainWindow);
             return result == true ? dialog.FolderName : null;
         });
     }
@@ -58,7 +55,7 @@ public sealed class DialogService : IDialogService
         return DispatchAsync(() =>
         {
             MessageBoxResult result = MessageBox.Show(
-                Application.Current.MainWindow,
+                System.Windows.Application.Current.MainWindow,
                 message,
                 title,
                 MessageBoxButton.YesNo,
@@ -73,7 +70,7 @@ public sealed class DialogService : IDialogService
         return DispatchAsync(() =>
         {
             MessageBox.Show(
-                Application.Current.MainWindow,
+                System.Windows.Application.Current.MainWindow,
                 message,
                 title,
                 MessageBoxButton.OK,
@@ -86,7 +83,7 @@ public sealed class DialogService : IDialogService
         return DispatchAsync(() =>
         {
             MessageBox.Show(
-                Application.Current.MainWindow,
+                System.Windows.Application.Current.MainWindow,
                 message,
                 title,
                 MessageBoxButton.OK,
@@ -102,7 +99,7 @@ public sealed class DialogService : IDialogService
             DuplicateResolutionDialogViewModel vm = new(report);
             Views.Dialogs.DuplicateResolutionDialog dialog = new(vm)
             {
-                Owner = Application.Current.MainWindow,
+                Owner = System.Windows.Application.Current.MainWindow,
             };
             dialog.ShowDialog();
             return dialog.SelectedResolution;
@@ -117,7 +114,7 @@ public sealed class DialogService : IDialogService
             ResumeJobDialogViewModel vm = new(job);
             Views.Dialogs.ResumeJobDialog dialog = new(vm)
             {
-                Owner = Application.Current.MainWindow,
+                Owner = System.Windows.Application.Current.MainWindow,
             };
             dialog.ShowDialog();
             return dialog.SelectedChoice;
@@ -132,7 +129,7 @@ public sealed class DialogService : IDialogService
             ReusePoolSelectionDialogViewModel vm = new(batches);
             Views.Dialogs.ReusePoolSelectionDialog dialog = new(vm)
             {
-                Owner = Application.Current.MainWindow,
+                Owner = System.Windows.Application.Current.MainWindow,
             };
             dialog.ShowDialog();
             return dialog.SelectedBatchIds;
@@ -142,7 +139,7 @@ public sealed class DialogService : IDialogService
     private static Task DispatchAsync(Action action)
     {
         TaskCompletionSource<bool> tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
-        Application.Current.Dispatcher.BeginInvoke(() =>
+        System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
         {
             try
             {
@@ -160,7 +157,7 @@ public sealed class DialogService : IDialogService
     private static Task<T> DispatchAsync<T>(Func<T> func)
     {
         TaskCompletionSource<T> tcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
-        Application.Current.Dispatcher.BeginInvoke(() =>
+        System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
         {
             try
             {
