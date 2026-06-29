@@ -26,15 +26,20 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <!--
       Bumped to 8.0.1 to match Microsoft.Extensions.Hosting's transitive
-      requirement. NuGet's NU1605 detects the implicit downgrade from
-      8.0.1 -> 8.0.0 as an error.
+      requirement (NU1605 fires on the 8.0.1 -> 8.0.0 implicit downgrade).
     -->
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
 
-    <!-- Logging: Serilog + bridges -->
+    <!--
+      Logging: Serilog + bridges. The Serilog hosting bridges jumped
+      from 8.0.0 directly to 9.0.0; there is no 8.0.1. 9.0.0 requires
+      Serilog >= 4.2.0 which would force a major bump of our Serilog
+      core (and every sink). 8.0.0 of the bridges is compatible with
+      Serilog 3.1.1 and accepts Microsoft.Extensions.Hosting 8.0.1.
+    -->
     <PackageReference Include="Serilog" Version="3.1.1" />
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
   </ItemGroup>
