@@ -32,7 +32,16 @@ public sealed partial class SettingsViewModel : ObservableObject
         _dialog = Guard.NotNull(dialog);
         _logger = Guard.NotNull(logger);
 
-        ApplyFromSettings(DefaultAppSettings.Value);
+        // Seed from whatever the SettingsService already loaded at
+        // app startup (App.xaml.cs.OnStartup -> settings.LoadAsync()).
+        // Falling back to defaults if the load hasn't run yet would
+        // happen naturally because SettingsService.Current is seeded
+        // with DefaultAppSettings.Value in its own constructor.
+        // Previous code unconditionally used DefaultAppSettings.Value,
+        // so a Save followed by a restart appeared to "lose" the
+        // saved values - the VM was overwriting them on every
+        // construction.
+        ApplyFromSettings(_settings.Current);
     }
 
     // ---- Mirrored AppSettings fields ----
