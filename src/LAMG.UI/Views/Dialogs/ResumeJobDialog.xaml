@@ -1,0 +1,51 @@
+<Window
+    x:Class="LAMG.UI.Views.Dialogs.ResumeJobDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:LAMG.UI.ViewModels.Dialogs"
+    d:DataContext="{d:DesignInstance Type=vm:ResumeJobDialogViewModel}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Resume previous job?"
+    Width="560"
+    SizeToContent="Height"
+    WindowStartupLocation="CenterOwner"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False">
+
+    <StackPanel Margin="16">
+        <TextBlock
+            Text="An interrupted job was found from a previous run."
+            FontWeight="SemiBold"
+            Margin="0,0,0,8"
+            TextWrapping="Wrap" />
+        <TextBlock
+            Text="{Binding Summary}"
+            TextWrapping="Wrap"
+            Margin="0,0,0,16"
+            Foreground="#444" />
+
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            <Button
+                Content="Discard"
+                Click="OnDiscard"
+                MinWidth="90"
+                Margin="0,0,8,0" />
+            <Button
+                Content="Cancel"
+                Click="OnCancel"
+                IsCancel="True"
+                MinWidth="90"
+                Margin="0,0,8,0" />
+            <Button
+                Content="Resume"
+                Click="OnResume"
+                IsDefault="True"
+                FontWeight="SemiBold"
+                MinWidth="110" />
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>LAMG.Common</RootNamespace>
+    <AssemblyName>LAMG.Common</AssemblyName>
+    <Description>
+      Small, dependency-free primitives shared across LAMG projects:
+      Result, Guard, async helpers, disposable adapters.
+    </Description>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,48 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.nupkg
+*.snupkg
+
+# Test results
+[Tt]est[Rr]esult*/
+coverage/
+*.coverage
+*.coveragexml
+
+# Application output / runtime data
+publish/
+[Pp]ublish/
+*.pdb
+
+# Local user data
+*.db
+*.db-shm
+*.db-wal
+appsettings.Local.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Bundled binaries kept out of source control (developer-provided)
+tools/ffmpeg/*.exe
+!tools/ffmpeg/.gitkeep

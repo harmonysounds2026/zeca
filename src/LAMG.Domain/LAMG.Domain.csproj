@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>LAMG.Domain</RootNamespace>
+    <AssemblyName>LAMG.Domain</AssemblyName>
+    <Description>
+      Pure domain models and enums for Longform Audio Mix Generator.
+      No external dependencies. Safe to reference from every other project.
+    </Description>
+  </PropertyGroup>
+
+</Project>

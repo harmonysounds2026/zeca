@@ -1,0 +1,174 @@
+<UserControl
+    x:Class="LAMG.UI.Views.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:LAMG.UI.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0,0,16,0">
+
+            <TextBlock
+                Text="Settings"
+                Style="{StaticResource SectionHeaderStyle}" />
+
+            <!-- Output -->
+            <TextBlock Text="Output" FontWeight="SemiBold" Margin="0,8,0,4" />
+
+            <Grid Margin="0,0,0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Output folder" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Grid.Column="1" Text="{Binding OutputFolder, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Column="2"
+                    Content="Browse..."
+                    Command="{Binding BrowseOutputFolderCommand}"
+                    MinWidth="90"
+                    Margin="8,0,0,0" />
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Target duration (min)" Style="{StaticResource FieldLabelStyle}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding TargetDurationOptions}"
+                    SelectedItem="{Binding TargetDurationMinutes, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Output format" Style="{StaticResource FieldLabelStyle}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding OutputFormatOptions}"
+                    SelectedItem="{Binding OutputFormat, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="MP3 bitrate (kbps)" Style="{StaticResource FieldLabelStyle}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding Mp3BitrateOptions}"
+                    SelectedItem="{Binding Mp3BitrateKbps, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="WAV bit depth" Style="{StaticResource FieldLabelStyle}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding WavBitDepthOptions}"
+                    SelectedItem="{Binding WavBitDepth, Mode=TwoWay}" />
+            </StackPanel>
+
+            <!-- Mixes -->
+            <TextBlock Text="Mixes" FontWeight="SemiBold" Margin="0,16,0,4" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Unique mixes per batch" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding UniqueMixesPerBatch, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Reuse mix count" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding ReuseMixCount, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Crossfade (ms)" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding CrossfadeMs, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!-- Audio -->
+            <TextBlock Text="Audio" FontWeight="SemiBold" Margin="0,16,0,4" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Normalization target (LUFS)" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding NormalizationTargetLufs, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="True-peak ceiling (dBTP)" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding NormalizationTruePeakDb, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Silence threshold (dB)" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding SilenceThresholdDb, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Silence min duration (ms)" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Width="80" Text="{Binding SilenceMinDurationMs, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!-- Performance -->
+            <TextBlock Text="Performance" FontWeight="SemiBold" Margin="0,16,0,4" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="CPU mode" Style="{StaticResource FieldLabelStyle}" />
+                <ComboBox
+                    Width="120"
+                    ItemsSource="{Binding CpuModeOptions}"
+                    SelectedItem="{Binding CpuMode, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <TextBlock Text="Scan import folders recursively" Style="{StaticResource FieldLabelStyle}" />
+                <CheckBox IsChecked="{Binding ImportRecursively}" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!-- FFmpeg -->
+            <TextBlock Text="FFmpeg" FontWeight="SemiBold" Margin="0,16,0,4" />
+
+            <Grid Margin="0,0,0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="ffmpeg folder override" Style="{StaticResource FieldLabelStyle}" />
+                <TextBox Grid.Column="1" Text="{Binding FFmpegPathOverride, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Column="2"
+                    Content="Browse..."
+                    Command="{Binding BrowseFFmpegFolderCommand}"
+                    MinWidth="90"
+                    Margin="8,0,0,0" />
+            </Grid>
+
+            <!-- Action bar -->
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Margin="0,24,0,0">
+                <TextBlock
+                    Text="{Binding StatusMessage}"
+                    VerticalAlignment="Center"
+                    Margin="0,0,12,0"
+                    Foreground="#666" />
+                <Button
+                    Content="Reset"
+                    Command="{Binding ResetToDefaultsCommand}"
+                    MinWidth="90"
+                    Margin="0,0,8,0" />
+                <Button
+                    Content="Reload"
+                    Command="{Binding LoadCommand}"
+                    MinWidth="90"
+                    Margin="0,0,8,0" />
+                <Button
+                    Content="Save"
+                    Command="{Binding SaveCommand}"
+                    MinWidth="110"
+                    Padding="20,6"
+                    FontWeight="SemiBold" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

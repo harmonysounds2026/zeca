@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>LAMG.Application</RootNamespace>
+    <AssemblyName>LAMG.Application</AssemblyName>
+    <Description>
+      Application layer: service contracts, use cases, job orchestration
+      and pure mix planning. Depends on Domain and Common only.
+    </Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LAMG.Domain\LAMG.Domain.csproj" />
+    <ProjectReference Include="..\LAMG.Common\LAMG.Common.csproj" />
+  </ItemGroup>
+
+</Project>

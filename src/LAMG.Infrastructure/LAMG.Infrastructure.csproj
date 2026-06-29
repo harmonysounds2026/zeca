@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>LAMG.Infrastructure</RootNamespace>
+    <AssemblyName>LAMG.Infrastructure</AssemblyName>
+    <Description>
+      Infrastructure layer: SQLite + Dapper persistence, FFmpeg / FFprobe
+      process wrappers, audio analysis services, file system, logging
+      sinks, settings storage and crash recovery.
+    </Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- SQLite + Dapper -->
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
+
+    <!-- Hosting / DI / Options / Configuration -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+
+    <!-- Logging -->
+    <PackageReference Include="Serilog" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LAMG.Application\LAMG.Application.csproj" />
+    <ProjectReference Include="..\LAMG.Domain\LAMG.Domain.csproj" />
+    <ProjectReference Include="..\LAMG.Common\LAMG.Common.csproj" />
+  </ItemGroup>
+
+  <!-- SQL migrations shipped as embedded resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\Migrations\*.sql" />
+  </ItemGroup>
+
+</Project>

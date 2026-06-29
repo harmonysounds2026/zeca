@@ -1,0 +1,75 @@
+<Window
+    x:Class="LAMG.UI.Views.Dialogs.DuplicateResolutionDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:LAMG.UI.ViewModels.Dialogs"
+    d:DataContext="{d:DesignInstance Type=vm:DuplicateResolutionDialogViewModel}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Duplicates detected"
+    Height="460"
+    Width="640"
+    WindowStartupLocation="CenterOwner"
+    ShowInTaskbar="False">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Text="The newly imported files contain duplicates. Choose how to proceed."
+            FontWeight="SemiBold"
+            TextWrapping="Wrap"
+            Margin="0,0,0,12" />
+
+        <DataGrid
+            Grid.Row="1"
+            ItemsSource="{Binding Groups}"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            IsReadOnly="True"
+            HeadersVisibility="Column"
+            GridLinesVisibility="Horizontal"
+            RowHeight="26">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Match"      Binding="{Binding Kind}"     Width="120" />
+                <DataGridTextColumn Header="Track ids"  Binding="{Binding TrackIds}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel
+            Grid.Row="2"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Margin="0,12,0,0">
+            <Button
+                Content="Cancel"
+                Click="OnCancel"
+                IsCancel="True"
+                MinWidth="90"
+                Margin="0,0,8,0" />
+            <Button
+                Content="Skip duplicates"
+                Click="OnSkipDuplicates"
+                MinWidth="130"
+                Margin="0,0,8,0" />
+            <Button
+                Content="Replace existing"
+                Click="OnReplaceExisting"
+                MinWidth="130"
+                Margin="0,0,8,0" />
+            <Button
+                Content="Import all"
+                Click="OnImportAll"
+                IsDefault="True"
+                FontWeight="SemiBold"
+                MinWidth="110" />
+        </StackPanel>
+    </Grid>
+</Window>
