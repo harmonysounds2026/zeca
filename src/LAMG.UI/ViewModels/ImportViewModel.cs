@@ -44,6 +44,18 @@ public sealed partial class ImportViewModel : ObservableObject
 
         // Default the recursive flag from saved settings.
         Recursive = _settings.Current.ImportRecursively;
+
+        // Without this, the [NotifyCanExecuteChangedFor] on _isBusy
+        // is the only thing that re-runs CanStartAnalysis. Adding or
+        // removing a folder mutates an ObservableCollection but does
+        // NOT raise property changes on the VM itself, so the Start
+        // and Clear buttons would stay disabled even after the user
+        // adds folders.
+        Folders.CollectionChanged += (_, _) =>
+        {
+            StartAnalysisCommand.NotifyCanExecuteChanged();
+            ClearCommand.NotifyCanExecuteChanged();
+        };
     }
 
     public ObservableCollection<BatchFolderRow> Folders { get; } = [];
